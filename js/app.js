@@ -1,17 +1,9 @@
-//This provides the speed information (random)
-function getRandomSpeed(){
-    const min=200; 
-    const max=600;  
-    return Math.random() * (max - min) + min; 
-}
-
-
 // Enemies our player must avoid
-var Enemy = function(x,y,z) {
+var Enemy = function(x,y) {
     //properties of the Enemy class
     this.x = x; //vertical location
     this.y = y; //horizontal location
-    this.z = z; //time variable (speed)
+    this.z = this.getRandomSpeed(); //time variable (speed)
     this.sprite = 'images/enemy-bug.png';
 };
 
@@ -27,19 +19,29 @@ Enemy.prototype.update = function(dt) {
     //if the enemy reaches the end of the game bored do this:
     if(this.x > 500) { 
         this.x = -100;//position befor the game border
-        this.z = getRandomSpeed(); //change to a new random speed
+        this.z = this.getRandomSpeed(); //change to a new random speed
     }
 
 };
 
+
+//This provides the speed information (random)
+Enemy.prototype.getRandomSpeed = function (){
+    const min=200; 
+    const max=500;  
+    return Math.random() * (max - min) + min; 
+};
+
 //Check Collide between the current enemy and player
 Enemy.prototype.checkCollide = function(){
-    PlayerSize = 50;
-    if (this.x < player.x + PlayerSize &&
-        this.x + PlayerSize > player.x &&
-        this.y < player.y + PlayerSize &&
-        this.y + PlayerSize > player.y) return true;
-}
+    
+    const enemySize = 65;
+    if (this.x - enemySize  < player.x  &&
+        this.x + enemySize  > player.x &&
+        this.y - enemySize - 15 < player.y  &&
+        this.y + enemySize - 15 > player.y) return true;
+
+};
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
@@ -100,7 +102,6 @@ Player.prototype.reset = function(win = false){
         winStrikeNode.innerHTML = Number(winStrikeNode.innerHTML) + 1;
     else  // if reset becasue of collide
         winStrikeNode.innerHTML = 0;
-
 };
 
 //--------------------------- END of Player Class
@@ -109,9 +110,8 @@ Player.prototype.reset = function(win = false){
 // enemy objects
 let allEnemies = [];
 for(let i = 1 ; i <= 3; i++){
-    const enemy = new Enemy(0,i * 73, getRandomSpeed());
-    allEnemies.push(enemy);
-}
+    allEnemies.push(new Enemy(0,i * 80 - 15 ));
+};
 
 // player object
 const player = new Player();
