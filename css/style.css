@@ -1,0 +1,14 @@
+body {
+    text-align: center;
+}
+
+#win-strike{
+    color: dodgerblue;
+}
+
+#win-strike-container{
+    color: limegreen;
+    font-size: 30px;
+    font-weight: bolder;
+    font-family: monospace;
+}
